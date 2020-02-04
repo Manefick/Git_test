@@ -1,0 +1,220 @@
+alex@alex:~$ git --version
+git version 2.17.1
+alex@alex:~$ git config --global user.name 'Alex Hrynchuk'                   ////// глобальная настройка гита
+alex@alex:~$ git config --global user.email 'alex.grinchuck@gmail.com'
+
+alex@alex:~$ mkdir git-project                                        ///// создания папки гит-проджект
+alex@alex:~/git-project$ git init                               ////// инициализация репозитория гит
+Инициализирован пустой репозиторий Git в /home/alex/git-project/.git/
+alex@alex:~/git-project$ git config user.name 'Alex'                     ///////локальная настройка гит проекта
+alex@alex:~/git-project$ git config user.email "tesr@gmail.com"
+alex@alex:~/git-project$ nano test.txt           ///// создания файла тест и его редактирования в консоли
+alex@alex:~/git-project$ git add test.txt                       ////// индексирование файла
+alex@alex:~/git-project$ git commit -m 'First commit'               /////// комит 
+[master (корневой коммит) 149a694] First commit
+ 1 file changed, 2 insertions(+)
+ create mode 100644 test.txt
+
+alex@alex:~/git-project$ git status                         ///// статус
+На ветке master
+нечего коммитить, нет изменений в рабочем каталоге
+alex@alex:~/git-project$ git status
+На ветке master
+Изменения, которые не в индексе для коммита:
+  (используйте «git add <файл>…», чтобы добавить файл в индекс)
+  (используйте «git checkout -- <файл>…», чтобы отменить изменения
+   в рабочем каталоге)
+
+	изменено:      test.txt
+
+нет изменений добавленных для коммита
+(используйте «git add» и/или «git commit -a»)
+
+alex@alex:~/git-project$ git log                              ///// история всех комитов
+commit c45ef4060efac4b602e2d38017208f88d244f458 (HEAD -> master)
+Author: Alex <tesr@gmail.com>
+Date:   Tue Feb 4 12:14:01 2020 +0200
+
+    new commit
+
+commit 288e735198f086d0014f07568e5ef09f703d3424
+Author: Alex <tesr@gmail.com>
+Date:   Tue Feb 4 12:10:16 2020 +0200
+
+    New fiel
+
+commit 5a87f392f4e6253ca8d2e2ba8ab7c10e2aca631f
+Author: Alex <tesr@gmail.com>
+Date:   Tue Feb 4 12:05:19 2020 +0200
+
+    Test Status
+
+commit a3bec2846e3594c7a96b956d00c92f389945b737
+Author: Alex <tesr@gmail.com>
+Date:   Tue Feb 4 12:01:56 2020 +0200
+
+    second commit
+
+[1]+  Остановлен    git log
+alex@alex:~/git-project$ git log  --pretty=oneline                              ////// история комитов в одну строчку
+c45ef4060efac4b602e2d38017208f88d244f458 (HEAD -> master) new commit
+288e735198f086d0014f07568e5ef09f703d3424 New fiel
+5a87f392f4e6253ca8d2e2ba8ab7c10e2aca631f Test Status
+a3bec2846e3594c7a96b956d00c92f389945b737 second commit
+149a69405bbc0159b16ad33974e96e617574a297 First commit
+
+alex@alex:~/git-project$ git checkout 5a87f392f4e6253ca8d2e2ba8ab7c10e2aca631f    ////// переход на какойто комит с целью чтото изменить
+Примечание: переход на «5a87f392f4e6253ca8d2e2ba8ab7c10e2aca631f».
+
+Вы сейчас в состоянии «отделённого HEAD». Вы можете осмотреться, сделать
+экспериментальные изменения и закоммитить их, также вы можете отменить
+изменения любых коммитов в этом состоянии не затрагивая любые ветки и
+не переходя на них.
+
+Если вы хотите создать новую ветку и сохранить свои коммиты, то вы
+можете сделать это (сейчас или позже) вызвав команду checkout снова,
+но с параметром -b. Например:
+
+  git checkout -b <имя-новой-ветки>
+
+HEAD сейчас на 5a87f39 Test Status
+alex@alex:~/git-project$ ls
+test.txt
+alex@alex:~/git-project$ git checkout master                 ///// переход на ветку мастер
+Предыдущая позиция HEAD была 5a87f39 Test Status
+Переключено на ветку «master»
+
+alex@alex:~/git-project$ git reset HEAD test.txt            ////// отменяем индексацию файла
+Непроиндексированные изменения после сброса:
+M	test.txt
+
+
+alex@alex:~/git-project$ git revert HEAD --no-edit              ///// отменяем(удаляем ) последний комит 
+[master f9dd0bc] Revert "www"
+ Date: Tue Feb 4 12:42:20 2020 +0200
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+alex@alex:~/git-project$ git branch                          ///// список всех веток
+* master
+alex@alex:~/git-project$ git checkout -b newbranch              ////// создание ветки невбрендч и переключение на нее
+Переключено на новую ветку «newbranch»
+
+alex@alex:~/git-project$ git checkout dev                     ////// переключение на ветку дев
+Переключено на ветку «dev»
+
+alex@alex:~/git-project$ git merge dev              ////// находясь на ветке мастер сливаем ветку дев в ветку мастер
+Обновление 8b68413..7f4dadb
+Fast-forward
+ devFiel.txt | 2 ++
+ test.txt    | 1 +
+ 2 files changed, 3 insertions(+)
+ create mode 100644 devFiel.txt
+
+alex@alex:~/git-project$ git checkout master                                       ///// переключение на ветку мастер
+Переключено на ветку «master»
+alex@alex:~/git-project$ git rebase dev                        /////находясь на ветке мастер сливаем без столкновений и ошибок с веткой дев
+Сначала перематываем указатель текущего коммита, чтобы применить ваши изменения поверх него…
+Применение: pyk
+
+alex@alex:~/git-project$ git remote add origin https://github.com/Manefick/Git_test.git              //////первое подключение к гитхабу
+alex@alex:~/git-project$ git push -u origin master                              ////// заливаем впервые проект на гитхаб
+Username for 'https://github.com': Manefick
+Password for 'https://Manefick@github.com': 
+Подсчет объектов: 37, готово.
+Delta compression using up to 2 threads.
+Сжатие объектов: 100% (23/23), готово.
+Запись объектов: 100% (37/37), 3.22 KiB | 470.00 KiB/s, готово.
+Total 37 (delta 2), reused 0 (delta 0)
+remote: Resolving deltas: 100% (2/2), done.
+To https://github.com/Manefick/Git_test.git
+ * [new branch]      master -> master
+Ветка «master» отслеживает внешнюю ветку «master» из «origin».
+
+alex@alex:~/git-project$  git push                             ///// заливаем весь проект на гитхаб
+Username for 'https://github.com': Manefick
+Password for 'https://Manefick@github.com': 
+Подсчет объектов: 3, готово.
+Delta compression using up to 2 threads.
+Сжатие объектов: 100% (2/2), готово.
+Запись объектов: 100% (3/3), 312 bytes | 312.00 KiB/s, готово.
+Total 3 (delta 0), reused 0 (delta 0)
+To https://github.com/Manefick/Git_test.git
+   42ebe4d..56af5bf  master -> master
+
+
+alex@alex:~/git-project$ git push origin newbranch               ///// заливаем в наш проект на гитхабе новую ветку ньюбранч
+Username for 'https://github.com': Manefick
+Password for 'https://Manefick@github.com': 
+Total 0 (delta 0), reused 0 (delta 0)
+remote: 
+remote: Create a pull request for 'newbranch' on GitHub by visiting:
+remote:      https://github.com/Manefick/Git_test/pull/new/newbranch
+remote: 
+To https://github.com/Manefick/Git_test.git
+ * [new branch]      newbranch -> newbranch
+
+Ваша ветка обновлена в соответствии с «origin/master».
+alex@alex:~/git-project$ git pull origin master //// скачиваем изменения с гитхаба с ветки мастер в текущую ветку на локале
+remote: Enumerating objects: 4, done.
+remote: Counting objects: 100% (4/4), done.
+remote: Compressing objects: 100% (2/2), done.
+remote: Total 3 (delta 0), reused 0 (delta 0), pack-reused 0
+Распаковка объектов: 100% (3/3), готово.
+Из https://github.com/Manefick/Git_test
+ * branch            master     -> FETCH_HEAD
+   56af5bf..aac8b19  master     -> origin/master
+Обновление 56af5bf..aac8b19
+Fast-forward
+ README.md | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 README.md
+
+ 1 file changed, 1 insertion(+)
+alex@alex:~/git-project$ git pull --rebase origin master //// скачиваем изменения с гитхаба которые без конфликтов налаживаються на наши с ветки мастер
+remote: Enumerating objects: 5, done.
+remote: Counting objects: 100% (5/5), done.
+remote: Compressing objects: 100% (2/2), done.
+remote: Total 3 (delta 0), reused 0 (delta 0), pack-reused 0
+Распаковка объектов: 100% (3/3), готово.
+Из https://github.com/Manefick/Git_test
+ * branch            master     -> FETCH_HEAD
+   aac8b19..786fcde  master     -> origin/master
+Сначала перематываем указатель текущего коммита, чтобы применить ваши изменения поверх него…
+Применение: ooo
+
+alex@alex:~/git-project$ git pull --rebase origin master
+error: не удалось выполнить получение с перемещением: У вас есть непроиндексированные изменения.
+error: сделайте коммит или спрячьте их.
+
+alex@alex:~/git-project$ git stash                      //// спрятали локальные изменения в корзину (теперь можно использовать ребазе)
+Рабочий каталог и состояние индекса сохранены WIP on master: 1ff9f89 Merge branch 'master' of https://github.com/Manefick/Git_test
+
+alex@alex:~/git-project$ git pull --rebase origin master
+Из https://github.com/Manefick/Git_test
+ * branch            master     -> FETCH_HEAD
+Сначала перематываем указатель текущего коммита, чтобы применить ваши изменения поверх него…
+Применение: ooo
+alex@alex:~/git-project$ git stash pop                          ///// удалили изменение из корзины (теперь их видно)
+На ветке master
+Ваша ветка опережает «origin/master» на 1 коммит.
+  (используйте «git push», чтобы опубликовать ваши локальные коммиты)
+
+Изменения, которые не в индексе для коммита:
+  (используйте «git add <файл>…», чтобы добавить файл в индекс)
+  (используйте «git checkout -- <файл>…», чтобы отменить изменения
+   в рабочем каталоге)
+
+	изменено:      index.html
+
+нет изменений добавленных для коммита
+(используйте «git add» и/или «git commit -a»)
+Отброшено refs/stash@{0} (36222979e7a57efe9978626a3d8450675ada8b4d)
+
+alex@alex:~/git-project$ git stash list                                          ////// список корзины
+stash@{0}: WIP on master: 6119a92 ooo
+stash@{1}: WIP on master: 6119a92 ooo
+alex@alex:~/git-project$ git stash show                           ////// показать корзину
+ README.md | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+
